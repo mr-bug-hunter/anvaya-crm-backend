@@ -14,6 +14,8 @@ const corsOptions={
 }
 app.use(cors(corsOptions))
 
+module.exports = app
+
 const leadRoutes = require("./routes/leadRoutes")
 app.use("/leads", leadRoutes)
 
