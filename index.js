@@ -14,7 +14,7 @@ const corsOptions={
 }
 app.use(cors(corsOptions))
 
-module.exports = app
+
 
 const leadRoutes = require("./routes/leadRoutes")
 app.use("/leads", leadRoutes)
@@ -39,3 +39,5 @@ const PORT = 5000
 app.listen(PORT, ()=>{
     console.log(`Server is running on ${PORT}`)
 })
+
+module.exports = app
