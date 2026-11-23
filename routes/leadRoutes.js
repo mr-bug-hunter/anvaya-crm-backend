@@ -18,7 +18,7 @@ app.get("/", async (req, res)=>{
         if(req.query.status) filter.status = req.query.status;
         if(req.query.source) filter.source = req.query.source
         if(req.query.salesAgent) filter.salesAgent = req.query.salesAgent;
-        if(req.query.tags) filter.tags = { $in: [req.query.tags] }
+        if(req.query.tags) filter.tags = { $regex: req.query.tags, $options: "i" }
         const leads = await Leads.find(filter).populate("salesAgent", "name email");
         res.status(200).json(leads)
     }catch(error){
