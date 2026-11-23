@@ -18,7 +18,7 @@ app.get("/", async (req, res)=>{
         if(req.query.status) filter.status = req.query.status;
         if(req.query.source) filter.source = req.query.source
         if(req.query.salesAgent) filter.salesAgent = req.query.salesAgent;
-        if(req.query.tags) filter.tags = { $regex: req.query.tags, $options: "i" }
+        if(req.query.tags) filter.tags = { $regex: req.query.tags, $options: "i" } // regex: this will search related to key word and the "i" is ignore lower & upper cases
         const leads = await Leads.find(filter).populate("salesAgent", "name email");
         res.status(200).json(leads)
     }catch(error){
