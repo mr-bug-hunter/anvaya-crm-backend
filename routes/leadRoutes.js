@@ -18,7 +18,7 @@ app.get("/", async (req, res)=>{
         if(req.query.status) filter.status = req.query.status;
         if(req.query.source) filter.source = req.query.source
         if(req.query.salesAgent) filter.salesAgent = req.query.salesAgent;
-        if(req.query.tags) filter.tags = { $regex: req.query.tags, $options: "i" } // regex: this will search related to key word and the "i" is ignore lower & upper cases
+        if(req.query.tags) filter.tags = { $regex: req.query.tags, $options: "i" } // regex is for case-insensitive tag search : this will search related to key word and the "i" is ignore lower & upper cases
         const leads = await Leads.find(filter).populate("salesAgent", "name email");
         res.status(200).json(leads)
     }catch(error){
@@ -40,7 +40,10 @@ app.get("/:id", async (req, res)=> {
 
 app.patch("/:id", async (req, res)=>{
     try{
-        const updatedLead = await Leads.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        const updatedLead = await Leads.findByIdAndUpdate(
+            req.params.id,
+            req.body, 
+            {new: true})
         res.status(200).json({message: "Leads Updated", updatedLead})
     }catch(error){
         res.status(500).json({error: error.message})
@@ -50,7 +53,10 @@ app.patch("/:id", async (req, res)=>{
 app.delete("/:id", async (req, res)=>{
     try{
         const deleteLead = await Leads.findByIdAndDelete(req.params.id)
-        res.status(200).json({message: "Lead Deleted", deleteLead})
+        if(!deleteLead){
+            return res.status(404).json({error: "Lead not Found"})    
+        }
+        res.status(200).json({message: "Lead Deleted Sucessfully", deleteLead})
     }catch(error){
         res.status(500).json({error: error.message})
     }
